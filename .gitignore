@@ -1,0 +1,38 @@
+public class MovingGraphicApp extends JPanel implements ActionListener {
+
+    JFrame jf = new JFrame("Binny Game");
+    //Instance of Query
+
+    Query q = new Query();
+
+    ArrayList<TrashObject> imgList = new ArrayList<>();// array for storing trash images
+
+    Random ran = new Random();//for generating random trash images
+    Timer tm = new Timer(17, this);//speed for the falling objects
+
+    //Default value for a new instance of user
+    User validUser = new User();
+
+    int velocity = 1;
+    int x = 0, y = 0;//x and y axis
+    int velx = 0, vely = velocity;
+
+    int pos; //the position where random generates the trash
+    JLabel time;
+    JLabel points;
+    JLabel levelup;
+    JButton backButton;
+
+    int pointsCount = 0;
+    int timeleft = 60;//time set per game 60seconds
+    int level = 1;
+    int counter = 0;
+
+    boolean endGame = false;
+    boolean pause = false;
+    Image menuImage = null;
+    Image endBinny = null;
+    private AudioPlayer audioClip;//badClip, goodClip;
+    private HashMap<String, AudioPlayer> sfx;
+
+    BinObject brownBin1, blueBin, blackBin, greenBin;
