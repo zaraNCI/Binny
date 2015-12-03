@@ -36,3 +36,99 @@ public class MovingGraphicApp extends JPanel implements ActionListener {
     private HashMap<String, AudioPlayer> sfx;
 
     BinObject brownBin1, blueBin, blackBin, greenBin;
+     public MovingGraphicApp() {
+
+        audioClip = new AudioPlayer("/game/sounds/intro.mid");
+
+        addKeyListener(new Controler(this));
+        setFocusable(true);
+        setFocusTraversalKeysEnabled(false);
+        requestFocus();
+
+        //Get screen size to set jframe size
+        /*Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+         double widthScreen = screenSize.getWidth();
+         double heightScreen = screenSize.getHeight();*/
+        time = new JLabel("Time: 59");
+        time.setBounds(20, 10, 50, 20); //setting the time label on screen
+        time.setFont(new Font("serif", Font.BOLD, 40));
+        time.setForeground(Color.GREEN);
+
+        points = new JLabel("Points: 0");
+        points.setBounds(100, 10, 100, 20);
+        points.setFont(new Font("serif", Font.BOLD, 40));
+        points.setForeground(Color.WHITE);
+
+        levelup = new JLabel("Level: 1");
+        levelup.setBounds(700, 10, 100, 20);
+        levelup.setFont(new Font("serif", Font.BOLD, 40));
+        levelup.setForeground(Color.ORANGE);
+        
+
+        backButton = new JButton();
+        backButton.setIcon(new ImageIcon(this.getClass().getResource("/game/Levels/Main Menu button.png")));
+        backButton.setBounds(this.getWidth() / 2 - 50, this.getHeight() / 2 - 25, 100, 500);
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
+            }
+        });
+
+        /*adding both components */
+        add(time);
+        add(points);
+        add(levelup);
+        add(backButton);
+
+        brownBin1 = new BinObject();//instantiate the bins objects
+        blueBin = new BinObject();
+        greenBin = new BinObject();
+        blackBin = new BinObject();
+
+        ImageIcon bin1 = new ImageIcon(getClass().getResource("/game/Bins/Brown Bin.png"));
+        brownBin1.setIcon(bin1);
+
+        ImageIcon bin = new ImageIcon(getClass().getResource("/game/Bins/Blue Bin.png"));
+        blueBin.setIcon(bin);
+
+        ImageIcon bin2 = new ImageIcon(getClass().getResource("/game/Bins/GreenBin.png"));
+        greenBin.setIcon(bin2);
+
+        ImageIcon bin3 = new ImageIcon(getClass().getResource("/game/Bins/Black Bin.png"));
+        blackBin.setIcon(bin3);
+
+        //loading images to image array
+        File f = new File(getClass().getResource("/game/rubish/").getPath());
+        LoadImages(f);
+        pos = ran.nextInt(imgList.size());
+    }
+
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        jf.setVisible(false);
+        jf.dispose();
+       
+        GUI gui=new GUI();
+        gui.setVisible(true);
+        
+}
+
+//resourced from youtube 
+    //serching thru the folder  to upload the images 
+    private void LoadImages(File folder) {
+        for (File f : folder.listFiles()) {
+            if (f.isDirectory()) {
+                LoadImages(f);
+            } else {
+                TrashObject obj = new TrashObject();
+                obj.trashType = f.getName().substring(0, f.getName().lastIndexOf("."));
+                try {
+                    obj.setIcon(new ImageIcon(f.toURL()));
+                } catch (MalformedURLException ex) {
+                    System.out.println(ex.getMessage());
+                }
+                obj.setRect(x, y, 100, 100);
+                imgList.add(obj);
+            }
+        }
+    }
+
